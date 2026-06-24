@@ -10,6 +10,9 @@ class Pessoa:
         self.pessoaID = pessoaID
         self.nome = nome
 
+    def __str__(self):
+        return f"{self.id}: {self.nome}"
+
 # receptor
 class BancoPessoas:
     def __init__(self) -> None:
@@ -40,14 +43,23 @@ class NewComando(Comando):
         self.banco = banco
 
     def executar(self, args) -> None:
-        pass
+        if len(args) != 2: # se nao foi passado <id> e <nome>
+            raise ValueError("uso incorreto, usar new <id> <nome>")
+
+        pessoaID = int(args[0])
+        nome = args[1]
+        self.banco.new(pessoaID, nome)
 
 class DeleteComando(Comando):
     def __init__(self, banco) -> None:
         self.banco = banco
 
     def executar(self, args) -> None:
-        pass
+        if len(args) != 1:
+            raise ValueError("uso incorreto, usar delete <id>")
+
+        pessoaID = int(args[0])
+        self.banco.delete(pessoaID)
 
 class GetComando(Comando):
     def __init__(self, banco) -> None:
