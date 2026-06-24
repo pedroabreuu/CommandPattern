@@ -2,27 +2,45 @@ from abc import ABC, abstractmethod
 
 class Comando(ABC):
     @abstractmethod
-    def executar(self) -> None:
+    def executar(self, args) -> None:
         pass
 
 class Pessoa:
-    pass
+    def __init__(self, id, nome):
+        self.id = id
+        self.nome = nome
 
 # receptor
 class BancoPessoas:
     pass
 
-class NewComando:
-    pass
+class NewComando(Comando):
+    def __init__(self, banco):
+        self.banco = banco
 
-class DeleteComando:
-    pass
+    def executar(self, args):
+        pass
 
-class GetComando:
-    pass
+class DeleteComando(Comando):
+    def __init__(self, banco):
+        self.banco = banco
 
-class AllComando:
-    pass
+    def executar(self, args):
+        pass
+
+class GetComando(Comando):
+    def __init__(self, banco):
+        self.banco = banco
+
+    def executar(self, args):
+        pass
+
+class AllComando(Comando):
+    def __init__(self, banco):
+        self.banco = banco
+
+    def executar(self, args):
+        pass
 
 class Executor:
     pass
