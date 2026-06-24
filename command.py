@@ -11,7 +11,7 @@ class Pessoa:
         self.nome = nome
 
     def __str__(self):
-        return f"{self.id}: {self.nome}"
+        return f"{self.pessoaID}: {self.nome}"
 
 # receptor
 class BancoPessoas:
@@ -66,14 +66,24 @@ class GetComando(Comando):
         self.banco = banco
 
     def executar(self, args) -> None:
-        pass
+        if len(args) != 1:
+            raise ValueError("uso incorreto, usar get <id>")
+
+        pessoaID = int(args[0])
+        pessoa = self.banco.get(pessoaID)
+        print(pessoa)
 
 class AllComando(Comando):
     def __init__(self, banco) -> None:
         self.banco = banco
 
     def executar(self, args) -> None:
-        pass
+        if len(args) != 0:
+            raise ValueError("uso incorreto, usar apenas all")
+
+        pessoas = self.banco.all()
+        for pessoa in pessoas:
+            print(pessoa)
 
 class Executor:
     pass
