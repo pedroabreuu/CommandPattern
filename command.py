@@ -6,13 +6,34 @@ class Comando(ABC):
         pass
 
 class Pessoa:
-    def __init__(self, id, nome):
-        self.id = id
+    def __init__(self, pessoaID, nome):
+        self.pessoaID = pessoaID
         self.nome = nome
 
 # receptor
 class BancoPessoas:
-    pass
+    def __init__(self):
+        self.pessoas = {}
+
+    def new(self, pessoaID, nome):
+        if pessoaID in self.pessoas:
+            raise ValueError("ja existe uma pessoa com este id")
+        self.pessoas[pessoaID] = Pessoa(pessoaID, nome)
+
+    def delete(self, pessoaID):
+        if pessoaID in self.pessoas:
+            self.pessoas.pop(pessoaID)
+        else:
+            raise ValueError("id nao encontrado")
+
+    def get(self, pessoaID):
+        if pessoaID not in self.pessoas:
+            raise ValueError("pessoa nao encontrada")
+        
+        return self.pessoas[pessoaID]
+    
+    def all(self):
+        return list(self.pessoas.values())
 
 class NewComando(Comando):
     def __init__(self, banco):
