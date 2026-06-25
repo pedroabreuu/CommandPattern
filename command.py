@@ -86,4 +86,17 @@ class AllComando(Comando):
             print(pessoa)
 
 class Executor:
-    pass
+    def __init__(self, banco: BancoPessoas) -> None:
+        self.comandos: Dict[str, Comando] = {
+            "new": NewComando(banco),
+            "delete": DeleteComando(banco),
+            "get": GetComando(banco),
+            "all": AllComando(banco),
+        }
+
+    def executar(self, nome_comando: str, args: List[str]) -> None:
+        if nome_comando not in self.comandos:
+            raise ValueError(f"comando desconhecido: {nome_comando}")
+
+        comando = self.comandos[nome_comando]
+        comando.executar(args)
