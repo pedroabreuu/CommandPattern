@@ -1,22 +1,23 @@
 from abc import ABC, abstractmethod
+from typing import Dict, List
 
 class Comando(ABC):
     @abstractmethod
-    def executar(self, args) -> None:
+    def executar(self, args: List[str]) -> None:
         pass
 
 class Pessoa:
     def __init__(self, pessoaID: int, nome: str) -> None:
-        self.pessoaID = pessoaID
-        self.nome = nome
+        self.pessoaID: int = pessoaID
+        self.nome: str = nome
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.pessoaID}: {self.nome}"
 
 # receptor
 class BancoPessoas:
     def __init__(self) -> None:
-        self.pessoas = {}
+        self.pessoas: Dict[int, Pessoa] = {}
 
     def new(self, pessoaID: int, nome: str) -> None:
         if pessoaID in self.pessoas:
@@ -34,16 +35,16 @@ class BancoPessoas:
             raise ValueError("pessoa nao encontrada")
         
         return self.pessoas[pessoaID]
-    
-    def all(self) -> list[Pessoa]:
+
+    def all(self) -> List[Pessoa]:
         return list(self.pessoas.values())
 
 class NewComando(Comando):
     def __init__(self, banco: BancoPessoas) -> None:
-        self.banco = banco
+        self.banco: BancoPessoas = banco
 
-    def executar(self, args) -> None:
-        if len(args) != 2: # se nao foi passado <id> e <nome>
+    def executar(self, args: List[str]) -> None:
+        if len(args) != 2:  # se nao foi passado <id> e <nome>
             raise ValueError("uso incorreto, usar new <id> <nome>")
 
         pessoaID = int(args[0])
@@ -51,21 +52,22 @@ class NewComando(Comando):
         self.banco.new(pessoaID, nome)
 
 class DeleteComando(Comando):
-    def __init__(self, banco) -> None:
-        self.banco = banco
+    def __init__(self, banco: BancoPessoas) -> None:
+        self.banco: BancoPessoas = banco
 
-    def executar(self, args) -> None:
+    def executar(self, args: List[str]) -> None:
         if len(args) != 1:
             raise ValueError("uso incorreto, usar delete <id>")
 
         pessoaID = int(args[0])
         self.banco.delete(pessoaID)
 
-class GetComando(Comando):
-    def __init__(self, banco) -> None:
-        self.banco = banco
 
-    def executar(self, args) -> None:
+class GetComando(Comando):
+    def __init__(self, banco: BancoPessoas) -> None:
+        self.banco: BancoPessoas = banco
+
+    def executar(self, args: List[str]) -> None:
         if len(args) != 1:
             raise ValueError("uso incorreto, usar get <id>")
 
@@ -74,10 +76,10 @@ class GetComando(Comando):
         print(pessoa)
 
 class AllComando(Comando):
-    def __init__(self, banco) -> None:
-        self.banco = banco
+    def __init__(self, banco: BancoPessoas) -> None:
+        self.banco: BancoPessoas = banco
 
-    def executar(self, args) -> None:
+    def executar(self, args: List[str]) -> None:
         if len(args) != 0:
             raise ValueError("uso incorreto, usar apenas all")
 
