@@ -100,3 +100,21 @@ class Executor:
 
         comando = self.comandos[nome_comando]
         comando.executar(args)
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) < 2:
+        print("uso correto: python command.py <comando> [args]")
+        sys.exit(1)
+
+    nome_comando: str = sys.argv[1]
+    args: List[str] = sys.argv[2:]
+
+    banco: BancoPessoas = BancoPessoas()
+    executor: Executor = Executor(banco)
+
+    try:
+        executor.executar(nome_comando, args)
+    except ValueError as erro:
+        print(f"erro: {erro}")
